@@ -3,7 +3,7 @@ import type { Game, Memory, Policy, Episode, Trainment } from './types';
 import learn from './learn';
 import move from './move';
 
-function* play<A, G, M>(
+async function* play<A, G, M>(
   game: Game<A, G>,
   initialGameState: G,
   memory: Memory<A, G, M>,
@@ -11,14 +11,14 @@ function* play<A, G, M>(
   policy: Policy<A>,
 ): Episode<A, G> {
   let gameState = initialGameState;
-  while (!game.final(gameState)) {
-    const transition = move(game, gameState, memory, memoryState, policy);
+  while (!await game.final(gameState)) {
+    const transition = await move(game, gameState, memory, memoryState, policy);
     gameState = transition.nextGameState;
     yield (transition);
   }
 }
 
-function* train<A, G, M>(
+async function* train<A, G, M>(
   alpha: number,
   gamma: number,
   game: Game<A, G>,
@@ -31,14 +31,14 @@ function* train<A, G, M>(
   let memoryState = initialMemoryState;
   for (;;) {
     let gameState = initialGameState;
-    while (!game.final(gameState)) {
-      const transition = move(
+    while (!await game.final(gameState)) {
+      const transition = await move(
         game, gameState,
         memory, memoryState,
         movePolicy,
       );
 
-      memoryState = learn(
+      memoryState = await learn(
         alpha, gamma,
         game, transition,
         memory, memoryState,

@@ -1,11 +1,11 @@
 {
-  "name": "markovjs",
-  "description": "reinforcement learning in javascript",
+  "name": "markovjs-async",
+  "description": "reinforcement learning in javascript (fork supporting promises)",
   "version": "0.1.3",
-  "main": "index.js",
-  "author": "lsunsi",
+  "main": "lib/index.js",
+  "author": "brandonhorst",
   "license": "MIT",
-  "repository": "https://github.com/lsunsi/markovjs.git",
+  "repository": "https://github.com/brandonhorst/markovjs-async.git",
   "files": [
     "lib/",
     "*.js"
@@ -26,7 +26,10 @@
   "devDependencies": {
     "babel-cli": "^6.18.0",
     "babel-eslint": "^7.1.1",
+    "babel-plugin-syntax-async-functions": "^6.13.0",
     "babel-plugin-syntax-flow": "^6.18.0",
+    "babel-plugin-transform-async-generator-functions": "^6.17.0",
+    "babel-plugin-transform-async-to-generator": "^6.8.0",
     "babel-plugin-transform-flow-strip-types": "^6.18.0",
     "babel-plugin-transform-object-rest-spread": "^6.19.0",
     "babel-plugin-transform-runtime": "^6.15.0",
@@ -40,6 +43,7 @@
     "mocha": "^3.2.0"
   },
   "scripts": {
+    "test": "npm run check:style && npm run check:types && npm run check:tests",
     "build": "babel src -d lib",
     "build:clean": "rm -rf lib/",
     "check:style": "eslint ./src",

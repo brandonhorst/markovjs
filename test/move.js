@@ -14,14 +14,14 @@ const game = {
 };
 
 describe('move', () => {
-  it('should reward based on transition', () => {
-    const t1 = move(
+  it('should reward based on transition', async () => {
+    const t1 = await move(
       game, 0,
       memory, memory.init(0.0),
       () => '+10',
     );
 
-    const t2 = move(
+    const t2 = await move(
       game, 0,
       memory, memory.init(0.0),
       () => '-10',
@@ -31,8 +31,8 @@ describe('move', () => {
     expect(t2.reward).to.equal(-1);
   });
 
-  it('should act following policy', () => {
-    const t = move(
+  it('should act following policy', async () => {
+    const t = await move(
       game, 0,
       memory, memory.init(0.0),
       () => 'X',

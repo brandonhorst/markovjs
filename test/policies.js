@@ -8,16 +8,20 @@ describe('policies', () => {
   const rates1 = { A: 1, B: 2, C: 3 };
   const rates2 = { A: 3, B: 2, C: 1 };
 
-  const distribution = (n, policy, rates) => [...Array(n).keys()].reduce(
-    (prev) => {
-      const choice = policy(actions, rater(rates));
-      return { ...prev, [choice]: prev[choice] + 1 };
-    }, { A: 0, B: 0, C: 0 },
-  );
+  const distribution = async (n, policy, rates) => {
+    const keys = [...Array(n).keys()]
+    return await keys.reduce(
+      async (prev) => {
+        prev = await prev;
+        const choice = await policy(actions, rater(rates));
+        return { ...prev, [choice]: prev[choice] + 1 };
+      }, { A: 0, B: 0, C: 0 }
+    );
+  };
 
-  it('should be uniform (random)', () => {
+  it('should be uniform (random)', async () => {
     const n = 1000;
-    const choices = distribution(n, policies.random, rates1);
+    const choices = await distribution(n, policies.random, rates1);
 
     const range = [n / 4, n / 2];
     expect(choices.A).to.be.within(...range);
@@ -25,19 +29,19 @@ describe('policies', () => {
     expect(choices.C).to.be.within(...range);
   });
 
-  it('should choose the highest rated action (greedy)', () => {
+  it('should choose the highest rated action (greedy)', async () => {
     const n = 100;
-    const choices1 = distribution(n, policies.greedy, rates1);
-    const choices2 = distribution(n, policies.greedy, rates2);
+    const choices1 = await distribution(n, policies.greedy, rates1);
+    const choices2 = await distribution(n, policies.greedy, rates2);
 
     expect(choices1.C).to.equal(n);
     expect(choices2.A).to.equal(n);
   });
 
-  it('should be epsilon random and 1 - epsilon greedy (egreedy)', () => {
+  it('should be epsilon random and 1 - epsilon greedy (egreedy)', async () => {
     const n = 1000;
     const epsilon = 0.5;
-    const choices = distribution(n, policies.egreedy(epsilon), rates1);
+    const choices = await distribution(n, policies.egreedy(epsilon), rates1);
 
     expect(choices.A).to.be.within(n / 8, n / 4);
     expect(choices.B).to.be.within(n / 8, n / 4);

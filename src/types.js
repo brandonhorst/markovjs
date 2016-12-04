@@ -1,9 +1,9 @@
 // @flow
 export type Game<A, G> = {
   actions: G=> Array<A>,
-  act: (G, A) => G,
-  reward: (G, G) => number,
-  final: G=> boolean,
+  act: (G, A) => Promise<G>,
+  reward: (G, G) => Promise<number>,
+  final: G=> Promise<boolean>,
 }
 
 export type Memory<A, G, M> = {
@@ -27,14 +27,14 @@ export type Move<A, G, M> = (
   Game<A, G>, G,
   Memory<A, G, M>, M,
   Policy<A>,
-)=> Transition<A, G>;
+)=> Promise<Transition<A, G>>;
 
 export type Learn<A, G, M> = (
   Game<A, G>,
   Transition<A, G>,
   Memory<A, G, M>, M,
   Policy<A>,
-)=> M;
+)=> Promise<M>;
 
-export type Episode<A, G> = Iterator<Transition<A, G>>;
-export type Trainment<M> = Iterator<M>;
+export type Episode<A, G> = AsyncGenerator<Transition<A, G>, void, void>;
+export type Trainment<M> = AsyncGenerator<M, void, void>;

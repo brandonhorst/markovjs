@@ -1,9 +1,11 @@
 # markovjs
 
-###### npm install markovjs
+This is an implementation of [markovjs](https://github.com/lsunsi/markovjs) that supports async Game logic. Note that it **does not work yet** due to [an issue with async iterators in Babel](https://github.com/babel/babel/issues/4783). Stay tuned.
 
-[![Release](https://img.shields.io/badge/Release-0.1.3-blue.svg?style=flat-square)](https://github.com/lsunsi/markovjs/releases)
-[![License](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](https://github.com/lsunsi/markovjs/blob/master/LICENSE)
+###### npm install markovjs-async
+
+[![Release](https://img.shields.io/badge/Release-0.1.3-blue.svg?style=flat-square)](https://github.com/brandonhorst/markovjs-async/releases)
+[![License](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](https://github.com/brandonhorst/markovjs-async/blob/master/LICENSE)
 
 This is a reference implementation of a basic reinforcement learning environment.
 It is intended as a playground for anyone interested in this field.
@@ -60,9 +62,9 @@ The game implementation should be implemented by you following this interface:
 // G: Game state type
 type Game<A, G> = {
   actions: G=> Array<A>, // what are the allowed actions for given state?
-  act: (G, A) => G, // what state leads given state taken given action?
-  reward: (G, G) => number, // what is the reward from going to state from state?
-  final: G=> boolean // is the given state final?
+  act: (G, A) => Promise<G>, // what state leads given state taken given action?
+  reward: (G, G) => Promise<number>, // what is the reward from going to state from state?
+  final: G=> Promise<boolean> // is the given state final?
 }
 ```
 

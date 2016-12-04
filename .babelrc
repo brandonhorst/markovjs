@@ -3,7 +3,10 @@
     "syntax-flow",
     "transform-flow-strip-types",
     "transform-object-rest-spread",
-    "transform-runtime"
+    "transform-runtime",
+    "transform-async-to-generator",
+    "transform-async-generator-functions",
+    "syntax-async-functions"
   ],
   "presets": [
     "latest"

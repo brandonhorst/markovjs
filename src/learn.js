@@ -7,7 +7,7 @@ const learning =
   (Q: number) =>
     (Q + (alpha * trace * ((reward - Q) + (gamma * nextQ))));
 
-export default function<A, G, M> (
+export default async function<A, G, M> (
   alpha: number,
   gamma: number,
   game: Game<A, G>,
@@ -15,7 +15,7 @@ export default function<A, G, M> (
   memory: Memory<A, G, M>,
   memoryState: M,
   policy: Policy<A>,
-): M {
+): Promise<M> {
   const { gameState, nextGameState, reward, action } = transition;
   const actions = game.actions(nextGameState);
   const rater = memory.rater(memoryState, nextGameState);
